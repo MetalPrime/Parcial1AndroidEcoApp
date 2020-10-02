@@ -3,6 +3,10 @@ package com.example.parcial1androidecoapp;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class TCPSingleton extends Thread{
@@ -12,6 +16,7 @@ public class TCPSingleton extends Thread{
     public static TCPSingleton getInstance(){
         if(instanceUnique==null){
             instanceUnique = new TCPSingleton();
+            getInstance().start();
         }
         return instanceUnique;
     }
@@ -28,8 +33,36 @@ public class TCPSingleton extends Thread{
     public void run() {
         try {
             socket = new Socket("",5000);
+            InputStream is = socket.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            reader = new BufferedReader(isr);
+
+            OutputStream os = socket.getOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os);
+            writer = new BufferedWriter(osw);
+
+            while (true){
+                String line = reader.readLine();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendMessages(String msg){
+        new Thread(
+                () ->{
+                    try {
+                            writer.write(msg);
+                            writer.flush();
+                    } catch (IOException e){
+                        e.printStackTrace();
+
+                    }
+                }
+        ).start();
+
+
     }
 }
