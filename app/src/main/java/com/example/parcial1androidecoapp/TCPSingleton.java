@@ -1,5 +1,7 @@
 package com.example.parcial1androidecoapp;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -39,7 +41,10 @@ public class TCPSingleton extends Thread{
     @Override
     public void run() {
         try {
-            socket = new Socket("",5000);
+            Log.e("Conexión","Esperando Conexión");
+            socket = new Socket("192.168.0.4",5000);
+
+            Log.e("Conexión","Conexión Establecido");
             InputStream is = socket.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             reader = new BufferedReader(isr);
@@ -65,6 +70,7 @@ public class TCPSingleton extends Thread{
                     try {
                             writer.write(msg);
                             writer.flush();
+                            Log.e("Mensaje", msg);
                     } catch (IOException e){
                         e.printStackTrace();
 

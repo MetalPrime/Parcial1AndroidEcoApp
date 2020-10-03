@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
 
             case R.id.btnPass:
-
+                tcp.sendMessages(name.getText().toString());
                 break;
         }
     }
