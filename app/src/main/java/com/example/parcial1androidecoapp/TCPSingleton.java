@@ -25,10 +25,17 @@ public class TCPSingleton extends Thread{
 
     }
 
+
+
     private Socket socket;
     private BufferedReader reader;
     private BufferedWriter writer;
 
+    private OnMessageListener observer;
+
+    public void SetObserver(OnMessageListener observer){
+        this.observer = observer;
+    }
     @Override
     public void run() {
         try {
@@ -43,6 +50,8 @@ public class TCPSingleton extends Thread{
 
             while (true){
                 String line = reader.readLine();
+
+                observer.OnMessage(line);
             }
 
         } catch (IOException e) {

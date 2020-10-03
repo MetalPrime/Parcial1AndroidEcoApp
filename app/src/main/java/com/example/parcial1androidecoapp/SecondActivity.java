@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
+public class SecondActivity extends AppCompatActivity implements View.OnClickListener,OnMessageListener {
 
     private Button btnUp;
     private Button btnDown;
     private Button btnLeft;
     private Button btnRight;
     private Button btnColor;
+    private TCPSingleton tcp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,9 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         btnLeft = findViewById(R.id.btnLeft);
         btnRight = findViewById(R.id.btnRight);
         btnColor = findViewById(R.id.btnColor);
+
+        tcp = TCPSingleton.getInstance();
+        tcp.SetObserver(this);
 
         btnUp.setOnClickListener(this);
         btnDown.setOnClickListener(this);
@@ -48,5 +52,12 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btnColor:
                 break;
         }
+    }
+
+    //Llegan los mensajes
+
+    @Override
+    public void OnMessage(String line) {
+
     }
 }
