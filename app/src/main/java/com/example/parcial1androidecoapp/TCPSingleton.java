@@ -55,7 +55,7 @@ public class TCPSingleton extends Thread{
 
             while (true){
                 String line = reader.readLine();
-
+                Log.e("Mensaje status",line);
                 observer.OnMessage(line);
             }
 
@@ -68,7 +68,7 @@ public class TCPSingleton extends Thread{
         new Thread(
                 () ->{
                     try {
-                            writer.write(msg);
+                            writer.write(msg+ "\n");
                             writer.flush();
                             Log.e("Mensaje", msg);
                     } catch (IOException e){

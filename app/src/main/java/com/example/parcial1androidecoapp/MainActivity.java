@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,OnMessageListener{
 
     private EditText name;
@@ -32,7 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
 
             case R.id.btnPass:
-                tcp.sendMessages(name.getText().toString());
+
+                Gson gson = new Gson();
+                Name newName = new Name(name.getText().toString());
+                String msg = gson.toJson(newName);
+                tcp.sendMessages(msg);
                 break;
         }
     }
