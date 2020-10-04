@@ -53,14 +53,14 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()){
 
             case R.id.btnUp:
-                coordinate.setPosY(coordinate.getPosY()+3);
+                coordinate.setPosY(coordinate.getPosY()-3);
                 line =  gson.toJson(coordinate);
                 tcp.sendMessages(line);
 
 
                 break;
             case R.id.btnDown:
-                coordinate.setPosY(coordinate.getPosY()-3);
+                coordinate.setPosY(coordinate.getPosY()+3);
                 line =  gson.toJson(coordinate);
                 tcp.sendMessages(line);
 
