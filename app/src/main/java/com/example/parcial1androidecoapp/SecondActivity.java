@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+
+import java.util.Random;
+
 public class SecondActivity extends AppCompatActivity implements View.OnClickListener,OnMessageListener {
 
     private Button btnUp;
@@ -14,6 +18,10 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     private Button btnRight;
     private Button btnColor;
     private TCPSingleton tcp;
+    private Coordinate coordinate;
+    private Gson gson;
+    private String line;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,9 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         btnRight.setOnClickListener(this);
         btnLeft.setOnClickListener(this);
         btnColor.setOnClickListener(this);
+
+        gson = new Gson();
+        coordinate = new Coordinate(250,250);
     }
 
 
@@ -42,14 +53,46 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()){
 
             case R.id.btnUp:
+                coordinate.setPosY(coordinate.getPosY()+3);
+                line =  gson.toJson(coordinate);
+                tcp.sendMessages(line);
+
+
                 break;
             case R.id.btnDown:
+                coordinate.setPosY(coordinate.getPosY()-3);
+                line =  gson.toJson(coordinate);
+                tcp.sendMessages(line);
+
+
                 break;
             case R.id.btnLeft:
+                coordinate.setPosX(coordinate.getPosX()-3);
+                line =  gson.toJson(coordinate);
+                tcp.sendMessages(line);
+
+
                 break;
             case R.id.btnRight:
+                coordinate.setPosX(coordinate.getPosX()+3);
+                line =  gson.toJson(coordinate);
+                tcp.sendMessages(line);
+
                 break;
             case R.id.btnColor:
+                Random r1,r2,r3;
+                r1 = new Random();
+                r2 = new Random();
+                r3 = new Random();
+                int n1,n2,n3;
+                n1 = r1.nextInt(255);
+                n2 = r2.nextInt(255);
+                n3 = r3.nextInt(255);
+
+
+                Color newColor = new Color(n1,n2,n3);
+                line =  gson.toJson(newColor);
+                tcp.sendMessages(line);
                 break;
         }
     }
