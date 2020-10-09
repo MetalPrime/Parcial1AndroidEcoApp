@@ -2,7 +2,9 @@ package com.example.parcial1androidecoapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,8 +23,10 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     private Coordinate coordinate;
     private Gson gson;
     private String line;
+    private boolean buttonPressed;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +40,132 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
 
         tcp = TCPSingleton.getInstance();
         tcp.SetObserver(this);
+        buttonPressed = false;
 
-        btnUp.setOnClickListener(this);
-        btnDown.setOnClickListener(this);
-        btnRight.setOnClickListener(this);
-        btnLeft.setOnClickListener(this);
+        btnUp.setOnTouchListener(
+                (view,event) -> {
+                    switch (event.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            buttonPressed = true;
+                            new Thread(
+                                    ()->{
+                                        while (buttonPressed){
+                                            runOnUiThread(
+                                                    () ->{
+                                                        coordinate.setPosY(coordinate.getPosY()-3);
+                                                        line =  gson.toJson(coordinate);
+                                                        tcp.sendMessages(line);
+                                                    }
+                                            );
+                                            try {
+                                                Thread.sleep(150);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                            ).start();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            buttonPressed = false;
+                            break;
+                    }
+                    return true;
+                }
+        );
+        btnDown.setOnTouchListener(
+                (view,event) -> {
+                    switch (event.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            buttonPressed = true;
+                            new Thread(
+                                    ()->{
+                                        while (buttonPressed){
+                                            runOnUiThread(
+                                                    () ->{
+                                                        coordinate.setPosY(coordinate.getPosY()+3);
+                                                        line =  gson.toJson(coordinate);
+                                                        tcp.sendMessages(line);
+                                                    }
+                                            );
+                                            try {
+                                                Thread.sleep(150);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                            ).start();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            buttonPressed = false;
+                            break;
+                    }
+                    return true;
+                }
+        );
+        btnRight.setOnTouchListener(
+                (view,event) -> {
+                    switch (event.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            buttonPressed = true;
+                            new Thread(
+                                    ()->{
+                                        while (buttonPressed){
+                                            runOnUiThread(
+                                                    () ->{
+                                                        coordinate.setPosX(coordinate.getPosX()+3);
+                                                        line =  gson.toJson(coordinate);
+                                                        tcp.sendMessages(line);
+                                                    }
+                                            );
+                                            try {
+                                                Thread.sleep(150);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                            ).start();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            buttonPressed = false;
+                            break;
+                    }
+                    return true;
+                }
+        );
+        btnLeft.setOnTouchListener(
+                (view,event) -> {
+                    switch (event.getAction()){
+                        case MotionEvent.ACTION_DOWN:
+                            buttonPressed = true;
+                            new Thread(
+                                    ()->{
+                                        while (buttonPressed){
+                                            runOnUiThread(
+                                                    () ->{
+                                                        coordinate.setPosX(coordinate.getPosX()-3);
+                                                        line =  gson.toJson(coordinate);
+                                                        tcp.sendMessages(line);
+                                                    }
+                                            );
+                                            try {
+                                                Thread.sleep(150);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                            ).start();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            buttonPressed = false;
+                            break;
+                    }
+                    return true;
+                }
+        );
         btnColor.setOnClickListener(this);
 
         gson = new Gson();
@@ -52,33 +177,6 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
 
-            case R.id.btnUp:
-                coordinate.setPosY(coordinate.getPosY()-3);
-                line =  gson.toJson(coordinate);
-                tcp.sendMessages(line);
-
-
-                break;
-            case R.id.btnDown:
-                coordinate.setPosY(coordinate.getPosY()+3);
-                line =  gson.toJson(coordinate);
-                tcp.sendMessages(line);
-
-
-                break;
-            case R.id.btnLeft:
-                coordinate.setPosX(coordinate.getPosX()-3);
-                line =  gson.toJson(coordinate);
-                tcp.sendMessages(line);
-
-
-                break;
-            case R.id.btnRight:
-                coordinate.setPosX(coordinate.getPosX()+3);
-                line =  gson.toJson(coordinate);
-                tcp.sendMessages(line);
-
-                break;
             case R.id.btnColor:
                 Random r1,r2,r3;
                 r1 = new Random();
